@@ -4,3 +4,4 @@ export { TextReveal } from "./TextReveal";
 export { Typewriter } from "./Typewriter";
 export { FloatingSticker } from "./FloatingSticker";
 export { Marquee } from "./Marquee";
+export { StackParallax, StackParallaxContainer } from "./StackParallax";

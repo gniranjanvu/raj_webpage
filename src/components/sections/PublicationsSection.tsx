@@ -2,13 +2,13 @@
 
 import { motion } from "framer-motion";
 import { BookOpen, ExternalLink, FileText, Users } from "lucide-react";
-import { FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
+import { FadeIn, StackParallax, StackParallaxContainer } from "@/components/animations";
 import { Badge } from "@/components/ui";
 import { publications } from "@/lib/constants";
 
 export function PublicationsSection() {
   return (
-    <section id="publications" className="section-padding">
+    <section id="publications" className="py-20 md:py-28">
       <div className="container-custom">
         {/* Section Header */}
         <FadeIn>
@@ -19,13 +19,18 @@ export function PublicationsSection() {
           </div>
         </FadeIn>
 
-        {/* Publications List */}
-        <StaggerChildren className="space-y-8 max-w-4xl mx-auto" staggerDelay={0.15}>
-          {publications.map((publication) => (
-            <StaggerItem key={publication.id}>
+        {/* Publications List with Stack Parallax */}
+        <StackParallaxContainer className="max-w-4xl mx-auto pb-[30vh]">
+          {publications.map((publication, index) => (
+            <StackParallax
+              key={publication.id}
+              index={index}
+              totalItems={publications.length}
+              cardHeight={380}
+            >
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="glass-card p-6 md:p-8 group"
+                className="glass-card p-6 md:p-8 group shadow-xl"
               >
                 {/* Publication Type Badge */}
                 <div className="flex items-center gap-3 mb-4">
@@ -108,9 +113,9 @@ export function PublicationsSection() {
                   )}
                 </div>
               </motion.div>
-            </StaggerItem>
+            </StackParallax>
           ))}
-        </StaggerChildren>
+        </StackParallaxContainer>
       </div>
     </section>
   );
