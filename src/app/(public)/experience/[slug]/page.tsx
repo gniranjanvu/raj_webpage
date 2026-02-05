@@ -8,7 +8,7 @@ import { experiences } from "@/lib/constants";
 import { notFound } from "next/navigation";
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const experience = experiences.find((exp) => exp.slug === params.slug);
+  const { slug } = await params;
+  const experience = experiences.find((exp) => exp.slug === slug);
 
   if (!experience) {
     return {
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function ExperienceDetailPage({ params }: PageProps) {
-  const experience = experiences.find((exp) => exp.slug === params.slug);
+export default async function ExperienceDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const experience = experiences.find((exp) => exp.slug === slug);
 
   if (!experience) {
     notFound();

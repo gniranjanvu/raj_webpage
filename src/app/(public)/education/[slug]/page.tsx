@@ -8,7 +8,7 @@ import { education } from "@/lib/constants";
 import { notFound } from "next/navigation";
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -18,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const edu = education.find((e) => e.slug === params.slug);
+  const { slug } = await params;
+  const edu = education.find((e) => e.slug === slug);
 
   if (!edu) {
     return {
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function EducationDetailPage({ params }: PageProps) {
-  const edu = education.find((e) => e.slug === params.slug);
+export default async function EducationDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const edu = education.find((e) => e.slug === slug);
 
   if (!edu) {
     notFound();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Loader2, Trash2 } from "lucide-react";
@@ -9,12 +9,13 @@ import { experiences } from "@/lib/constants";
 import { notFound } from "next/navigation";
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function EditExperiencePage({ params }: PageProps) {
+  const { id } = use(params);
   const router = useRouter();
-  const experience = experiences.find((exp) => exp.id === params.id);
+  const experience = experiences.find((exp) => exp.id === id);
 
   if (!experience) {
     notFound();
