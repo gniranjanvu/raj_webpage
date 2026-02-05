@@ -3,13 +3,13 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Calendar, MapPin, ArrowRight, Building2 } from "lucide-react";
-import { FadeIn, StaggerChildren, StaggerItem } from "@/components/animations";
+import { FadeIn, StackParallax, StackParallaxContainer } from "@/components/animations";
 import { Badge } from "@/components/ui";
 import { experiences } from "@/lib/constants";
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="section-padding bg-gray-50 dark:bg-gray-900/50">
+    <section id="experience" className="py-20 md:py-28 bg-gray-50 dark:bg-gray-900/50">
       <div className="container-custom">
         {/* Section Header */}
         <FadeIn>
@@ -20,14 +20,19 @@ export function ExperienceSection() {
           </div>
         </FadeIn>
 
-        {/* Experience Cards */}
-        <StaggerChildren className="space-y-6" staggerDelay={0.15}>
-          {experiences.map((exp) => (
-            <StaggerItem key={exp.id}>
+        {/* Experience Cards with Stack Parallax */}
+        <StackParallaxContainer className="pb-[50vh]">
+          {experiences.map((exp, index) => (
+            <StackParallax
+              key={exp.id}
+              index={index}
+              totalItems={experiences.length}
+              cardHeight={320}
+            >
               <motion.div
-                whileHover={{ scale: 1.02, y: -5 }}
+                whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="glass-card p-6 md:p-8 cursor-pointer group"
+                className="glass-card p-6 md:p-8 cursor-pointer group shadow-xl"
               >
                 <div className="flex flex-col md:flex-row md:items-start gap-6">
                   {/* Company Logo/Icon */}
@@ -75,8 +80,8 @@ export function ExperienceSection() {
                     </div>
 
                     {/* Highlights */}
-                    <ul className="space-y-2 mb-6">
-                      {exp.highlights?.map((highlight, i) => (
+                    <ul className="space-y-2 mb-4">
+                      {exp.highlights?.slice(0, 2).map((highlight, i) => (
                         <li
                           key={i}
                           className="flex items-start gap-3 text-gray-600 dark:text-gray-400"
@@ -85,15 +90,23 @@ export function ExperienceSection() {
                           <span>{highlight}</span>
                         </li>
                       ))}
+                      {exp.highlights && exp.highlights.length > 2 && (
+                        <li className="text-sm text-gray-500 dark:text-gray-400 italic">
+                          +{exp.highlights.length - 2} more highlights
+                        </li>
+                      )}
                     </ul>
 
                     {/* Tech Stack */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {exp.tech_stack.map((tech) => (
+                      {exp.tech_stack.slice(0, 4).map((tech) => (
                         <Badge key={tech} variant="secondary">
                           {tech}
                         </Badge>
                       ))}
+                      {exp.tech_stack.length > 4 && (
+                        <Badge variant="secondary">+{exp.tech_stack.length - 4}</Badge>
+                      )}
                     </div>
 
                     {/* View Details Link */}
@@ -107,9 +120,9 @@ export function ExperienceSection() {
                   </div>
                 </div>
               </motion.div>
-            </StaggerItem>
+            </StackParallax>
           ))}
-        </StaggerChildren>
+        </StackParallaxContainer>
       </div>
     </section>
   );
