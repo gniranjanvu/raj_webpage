@@ -90,6 +90,11 @@ export function ExperienceSection() {
                           <span>{highlight}</span>
                         </li>
                       ))}
+                      {exp.highlights && exp.highlights.length > 2 && (
+                        <li className="text-sm text-gray-500 dark:text-gray-400 italic">
+                          +{exp.highlights.length - 2} more highlights
+                        </li>
+                      )}
                     </ul>
 
                     {/* Tech Stack */}
